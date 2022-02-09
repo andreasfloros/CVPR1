@@ -19,9 +19,9 @@ homography = homography_solve(matrixMatchedPoints1, matrixMatchedPoints2);
 transformedPts = homography_transform(matrixMatchedPoints1, homography);
 
 figure;
-image(HG1RGB);
+image(HG2RGB);
 hold on;
-plot(matrixMatchedPoints1(1, :), matrixMatchedPoints1(2, :), '*');
+plot(matrixMatchedPoints2(1, :), matrixMatchedPoints2(2, :), '*');
 plot(transformedPts(1, :), transformedPts(2, :), '*');
 legend('Detected Points','Transformed Points');
 
