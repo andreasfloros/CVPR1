@@ -3,8 +3,8 @@
 
 % homography
 
-HG1RGB = imread('HG/object/1.JPG');
-HG2RGB = imread('HG/object/2.JPG');
+HG1RGB = imread('HG/_DSC2670.JPG');
+HG2RGB = imread('HG/_DSC2671.JPG');
 HG1 = im2gray(HG1RGB);
 HG2 = im2gray(HG2RGB);
 
@@ -21,8 +21,8 @@ transformedPts = homography_transform(matrixMatchedPoints1, homography);
 figure;
 image(HG2RGB);
 hold on;
-plot(matrixMatchedPoints2(1, :), matrixMatchedPoints2(2, :), '*');
-plot(transformedPts(1, :), transformedPts(2, :), '*');
+plot(matrixMatchedPoints2(1, :), matrixMatchedPoints2(2, :), '*', 'MarkerSize', 16);
+plot(transformedPts(1, :), transformedPts(2, :), '*', 'MarkerSize', 16);
 legend('Detected Points','Transformed Points');
 
 % fundamental

@@ -8,8 +8,8 @@
 % automatic correspondences using
 % https://www.mathworks.com/help/vision/ref/matchfeatures.html
 
-I1RGB = imread('FD/object/1.JPG');
-I2RGB = imread('FD/object/2.JPG');
+I1RGB = imread('FD/_DSC2654.JPG');
+I2RGB = imread('FD/_DSC2655.JPG');
 I1 = im2gray(I1RGB);
 I2 = im2gray(I2RGB);
 

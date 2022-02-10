@@ -6,7 +6,7 @@
 % other should be odd (my grid was symmetric)
 % I think we should retake the pictures to at least bring the reprojection error down
 
-images = imageSet('HG/grid');
+images = imageSet('checkerboard');
 imageFileNames = images.ImageLocation;
 
 [imagePoints, boardSize] = detectCheckerboardPoints(imageFileNames);
