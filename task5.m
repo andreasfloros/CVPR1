@@ -1,3 +1,4 @@
+rng(1)
 % TASK 5 - Stereo Rectification
 close all
 
@@ -17,7 +18,7 @@ if automatic
 
 % manual correspondence - much more accurate
 else
-    click = true;
+    click = false;
     if click
         % click points
         [movingPoints, fixedPoints] = cpselect(I1RGB, I2RGB, 'Wait', true);
@@ -44,21 +45,21 @@ end
 [I1Rect,I2Rect] = rectifyStereoImages(I1RGB,I2RGB,T1,T2);
 
 % 4. Match Stereo Rectified Points for Epipolar Line Visualization
-% I1RectGray = im2gray(I1Rect);
-% I2RectGray = im2gray(I2Rect);
-% automatic = false
-% % automatic correspondence 
-% if automatic
-%     [rectMatchedPoints1, rectMatchedPoints2] = get_matched_points(I1RectGray, I2RectGray);
-% % manual correspondence - much more accurate
-% else
-%     [movingPoints, fixedPoints] = cpselect(I1Rect, I2Rect, 'Wait', true);
-%     rectMatchedPoints1 = movingPoints
-%     rectMatchedPoints2 = fixedPoints
-% end
-% % extract new fundamental matrix
-% [rectFundamental,rectInliers] = estimateFundamentalMatrix(rectMatchedPoints1,...
-%     rectMatchedPoints2,'NumTrials',4000);
+I1RectGray = im2gray(I1Rect);
+I2RectGray = im2gray(I2Rect);
+automatic = false
+% automatic correspondence 
+if automatic
+    [rectMatchedPoints1, rectMatchedPoints2] = get_matched_points(I1RectGray, I2RectGray);
+% manual correspondence - much more accurate
+else
+    [movingPoints, fixedPoints] = cpselect(I1Rect, I2Rect, 'Wait', true);
+    rectMatchedPoints1 = movingPoints
+    rectMatchedPoints2 = fixedPoints
+end
+% extract new fundamental matrix
+[rectFundamental,rectInliers] = estimateFundamentalMatrix(rectMatchedPoints1,...
+    rectMatchedPoints2,'NumTrials',4000);
 
 % 5. Display Stereo Rectification with Epipolar Lines
 % extract epilines for image 1
@@ -82,28 +83,28 @@ line(points2(:,[1,3])',points2(:,[2,4])');
 hold off;
 pbaspect([4 2.5 1])
 
-% % display rectified image 1 with epilines
+% display rectified image 1 with epilines
 image(I1Rect);
 
-% subplot(2,2,3);
-% rectEpiLines1 = epipolarLine(rectFundamental, rectMatchedPoints1);
-% rectPoints1 = lineToBorderPoints(rectEpiLines1,size(I2Rect));
-% image(I1Rect);
-% hold on;
-% line(rectPoints1(:,[1,3])',rectPoints1(:,[2,4])');
-% hold off;
-% pbaspect([4 2 1])
+subplot(2,2,3);
+rectEpiLines1 = epipolarLine(rectFundamental, rectMatchedPoints1);
+rectPoints1 = lineToBorderPoints(rectEpiLines1,size(I2Rect));
+image(I1Rect);
+hold on;
+line(rectPoints1(:,[1,3])',rectPoints1(:,[2,4])');
+hold off;
+pbaspect([4 2 1])
 
-% % display rectified image 2
+% display rectified image 2
 image(I2Rect);
-% subplot(2,2,4);
-% rectEpiLines2 = epipolarLine(rectFundamental', rectMatchedPoints2);
-% rectPoints2 = lineToBorderPoints(rectEpiLines2,size(I2Rect));
-% image(I2Rect);
-% hold on;
-% line(rectPoints2(:,[1,3])',rectPoints2(:,[2,4])');
-% hold off;
-% pbaspect([4 2 1])
+subplot(2,2,4);
+rectEpiLines2 = epipolarLine(rectFundamental', rectMatchedPoints2);
+rectPoints2 = lineToBorderPoints(rectEpiLines2,size(I2Rect));
+image(I2Rect);
+hold on;
+line(rectPoints2(:,[1,3])',rectPoints2(:,[2,4])');
+hold off;
+pbaspect([4 2 1])
 
 
 
@@ -125,4 +126,3 @@ imshow(disparityMap,disparityRange);
 title('Disparity Map');
 colormap jet
 colorbar
-
