@@ -1,36 +1,52 @@
-% results aren't very good atm, I think it's a combination of not too great
-% pictures and weak matching algorithm
+% TASK 3 - Camera Calibration
 
-% homography
+% parameter estimation using
+% https://www.mathworks.com/help/vision/ref/estimatecameraparameters.html
+close all
 
-HG1RGB = imread('HG/_DSC2670.JPG');
-HG2RGB = imread('HG/_DSC2671.JPG');
-HG1 = im2gray(HG1RGB);
-HG2 = im2gray(HG2RGB);
+images = imageSet('checkerboard');
+imageFileNames = images.ImageLocation;
+[imagePoints, boardSize] = detectCheckerboardPoints(imageFileNames);
 
-% get matches
-[matchedPoints1, matchedPoints2] = get_matched_points(HG1, HG2);
+% grid size
+squareSizeInMM = 30;
+worldPoints = generateCheckerboardPoints(boardSize,squareSizeInMM);
+I = readimage(images,1);
+imageSize = [size(I, 1),size(I, 2)];
+params = estimateCameraParameters(imagePoints,worldPoints, ...
+                                  'ImageSize',imageSize);
 
-% convert matches to matrices and use SVD to get the homography matrix
-matrixMatchedPoints1 = matchedPoints1.Location';
-matrixMatchedPoints2 = matchedPoints2.Location';
-homography = homography_solve(matrixMatchedPoints1, matrixMatchedPoints2);
-
-transformedPts = homography_transform(matrixMatchedPoints1, homography);
-
+% show reprojection error
+showReprojectionErrors(params);
 figure;
-image(HG2RGB);
-hold on;
-plot(matrixMatchedPoints2(1, :), matrixMatchedPoints2(2, :), '*', 'MarkerSize', 16);
-plot(transformedPts(1, :), transformedPts(2, :), '*', 'MarkerSize', 16);
-legend('Detected Points','Transformed Points');
+showExtrinsics(params);
+drawnow;
 
-% fundamental
+% display reprojection
+figure;
+for i = 1:length(imageFileNames)
+    subaxis(3,3,i, 'Spacing', 0.03, 'Padding', 0, 'Margin', 0);
+    imshow(imageFileNames{i}); 
+    hold on;
+    plot(imagePoints(:,1,i), imagePoints(:,2,i),'go');
+    plot(params.ReprojectedPoints(:,1,i),params.ReprojectedPoints(:,2,i),'r+');
+    legend('Detected Points','ReprojectedPoints');
+    hold off;    
+end
 
-% I think this is interesting:
-% https://www.mathworks.com/help/vision/ref/estimatefundamentalmatrix.html
+% show camera parameters - https://www.mathworks.com/help/vision/ref/cameraparameters.html
+% 1. Camera Intrinsics
+disp("Camera Intrinsics");
+disp(params.Intrinsics);
+disp(params.IntrinsicMatrix);
 
-FD1RGB = imread('FD/object/1.JPG');
-FD2RGB = imread('FD/object/2.JPG');
-FD1 = im2gray(FD1RGB);
-FD2 = im2gray(FD2RGB);
+% 2. Camera Extrinsics 
+disp("Camera Extrinsics");
+disp(params.RotationMatrices);
+disp(params.RotationVectors);
+disp(params.TranslationVectors);
+
+% 3. Camera Distortion
+disp("Camera Distortion");
+disp(params.RadialDistortion);
+disp(params.TangentialDistortion);

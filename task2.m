@@ -1,36 +1,30 @@
-% parameter estimation using
-% https://www.mathworks.com/help/vision/ref/estimatecameraparameters.html
+% TASK 2 - Checking Correspondences
+% for manual correspondences maybe we can use this?
+% https://www.mathworks.com/help/images/select-matching-control-point-pairs.html#f20-23674
 
-% my images have a pretty big error (especially HG)
-% also, the grid needs to be asymmetric: one side should be even and the
-% other should be odd (my grid was symmetric)
-% I think we should retake the pictures to at least bring the reprojection error down
+% automatic correspondences using
+% https://www.mathworks.com/help/vision/ref/matchfeatures.html
+close all
 
-images = imageSet('checkerboard');
-imageFileNames = images.ImageLocation;
-
-[imagePoints, boardSize] = detectCheckerboardPoints(imageFileNames);
-
-% not sure if we should change this
-squareSizeInMM = 29;
-worldPoints = generateCheckerboardPoints(boardSize,squareSizeInMM);
-
-I = readimage(images,1);
-imageSize = [size(I, 1),size(I, 2)];
-params = estimateCameraParameters(imagePoints,worldPoints, ...
-                                  'ImageSize',imageSize);
-
-showReprojectionErrors(params);
-
-figure;
-showExtrinsics(params);
-
-drawnow;
-
+% --- Automatic Correspondence ---
+I1RGB = imread('FD/_DSC2654.JPG');
+I2RGB = imread('FD/_DSC2665.JPG');
+I1GS = im2gray(I1RGB);
+I2GS = im2gray(I2RGB);
+[matchedPoints1, matchedPoints2] = get_matched_points(I1GS, I2GS);
 figure; 
-imshow(imageFileNames{1}); 
-hold on;
-plot(imagePoints(:,1,1), imagePoints(:,2,1),'go');
-plot(params.ReprojectedPoints(:,1,1),params.ReprojectedPoints(:,2,1),'r+');
-legend('Detected Points','ReprojectedPoints');
-hold off;
+showMatchedFeatures(I1RGB,I2RGB,matchedPoints1,matchedPoints2, 'montage');
+
+% --- Manual Correspondence ---
+click = false;
+if click
+    % click points
+    cpselect(I1RGB, I2RGB);
+    % save clicked points
+    save('clicksave_t2.mat','movingPoints','fixedPoints');
+else
+    % load clicked points
+    load('clicksave_t2.mat');
+end
+figure; 
+showMatchedFeatures(I1RGB,I2RGB,movingPoints,fixedPoints, 'montage');
