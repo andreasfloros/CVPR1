@@ -84,8 +84,6 @@ hold off;
 pbaspect([4 2.5 1])
 
 % display rectified image 1 with epilines
-image(I1Rect);
-
 subplot(2,2,3);
 rectEpiLines1 = epipolarLine(rectFundamental, rectMatchedPoints1);
 rectPoints1 = lineToBorderPoints(rectEpiLines1,size(I2Rect));
@@ -96,7 +94,6 @@ hold off;
 pbaspect([4 2 1])
 
 % display rectified image 2
-image(I2Rect);
 subplot(2,2,4);
 rectEpiLines2 = epipolarLine(rectFundamental', rectMatchedPoints2);
 rectPoints2 = lineToBorderPoints(rectEpiLines2,size(I2Rect));
@@ -105,7 +102,6 @@ hold on;
 line(rectPoints2(:,[1,3])',rectPoints2(:,[2,4])');
 hold off;
 pbaspect([4 2 1])
-
 
 
 % -----------------------------

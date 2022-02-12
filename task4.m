@@ -47,7 +47,7 @@ else
     click = false;
     if click
         % click points
-        cpselect(FD1RGB, FD2RGB);
+        [movingPoints, fixedPoints] = cpselect(FD1RGB, FD2RGB, 'Wait', true);
         % save clicked points
         save('clicksave_t4.mat','movingPoints','fixedPoints');
         matchedPoints1 = movingPoints

@@ -1,7 +1,7 @@
 % TASK 1 - visualize FD and HG and place in appendix
 close all
 
-% --- Calibration Grid --- 
+% --- Calibration Grid - Original --- 
 I1RGB = imread('checkerboard/_DSC2643.JPG');
 I2RGB = imread('checkerboard/_DSC2644.JPG');
 I3RGB = imread('checkerboard/_DSC2645.JPG');
@@ -11,6 +11,31 @@ I6RGB = imread('checkerboard/_DSC2649.JPG');
 I7RGB = imread('checkerboard/_DSC2651.JPG');
 I8RGB = imread('checkerboard/_DSC2652.JPG');
 I9RGB = imread('checkerboard/_DSC2653.JPG');
+figure;
+montage({I1RGB, I2RGB, I3RGB, I4RGB, I5RGB, I6RGB, I7RGB, I8RGB, I9RGB});
+
+I1GS = im2gray(I1RGB);
+I2GS = im2gray(I2RGB);
+I3GS = im2gray(I3RGB);
+I4GS = im2gray(I4RGB);
+I5GS = im2gray(I5RGB);
+I6GS = im2gray(I6RGB);
+I7GS = im2gray(I7RGB);
+I8GS = im2gray(I8RGB);
+I9GS = im2gray(I9RGB);
+figure;
+montage({I1GS, I2GS, I3GS, I4GS, I5GS, I6GS, I7GS, I8GS, I9GS});
+
+% --- Calibration Grid - Distorted --- 
+I1RGB = imread('checkerboard_distorted/distorted_1.JPG');
+I2RGB = imread('checkerboard_distorted/distorted_2.JPG');
+I3RGB = imread('checkerboard_distorted/distorted_3.JPG');
+I4RGB = imread('checkerboard_distorted/distorted_4.JPG');
+I5RGB = imread('checkerboard_distorted/distorted_5.JPG');
+I6RGB = imread('checkerboard_distorted/distorted_6.JPG');
+I7RGB = imread('checkerboard_distorted/distorted_7.JPG');
+I8RGB = imread('checkerboard_distorted/distorted_8.JPG');
+I9RGB = imread('checkerboard_distorted/distorted_9.JPG');
 figure;
 montage({I1RGB, I2RGB, I3RGB, I4RGB, I5RGB, I6RGB, I7RGB, I8RGB, I9RGB});
 

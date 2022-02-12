@@ -19,7 +19,7 @@ showMatchedFeatures(I1RGB,I2RGB,matchedPoints1,matchedPoints2, 'montage');
 click = false;
 if click
     % click points
-    cpselect(I1RGB, I2RGB);
+    [movingPoints, fixedPoints] = cpselect(I1RGB, I2RGB, 'Wait', true);
     % save clicked points
     save('clicksave_t2.mat','movingPoints','fixedPoints');
 else
