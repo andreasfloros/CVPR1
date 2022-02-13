@@ -15,7 +15,7 @@ worldPoints = generateCheckerboardPoints(boardSize,squareSizeInMM);
 I = readimage(images,1);
 imageSize = [size(I, 1),size(I, 2)];
 params = estimateCameraParameters(imagePoints,worldPoints, ...
-                                  'ImageSize',imageSize);
+                                  'ImageSize',imageSize,'EstimateSkew',true);
 % show reprojection error
 showReprojectionErrors(params);
 figure;
@@ -66,7 +66,7 @@ worldPoints = generateCheckerboardPoints(boardSize,squareSizeInMM);
 I1 = readimage(images,1);
 imageSize = [size(I1, 1),size(I1, 2)];
 params = estimateCameraParameters(imagePoints,worldPoints, ...
-                                  'ImageSize',imageSize);
+                                  'ImageSize',imageSize,'EstimateSkew',true);
 % Obtain distortion parameters
 disp("Modified Camera Distortion");
 disp(params.RadialDistortion);
