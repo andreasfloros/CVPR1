@@ -4,27 +4,18 @@
 
 % automatic correspondences using
 % https://www.mathworks.com/help/vision/ref/matchfeatures.html
-close all
+close all;
 
 % --- Automatic Correspondence ---
 I1RGB = imread('FD/_DSC2654.JPG');
 I2RGB = imread('FD/_DSC2665.JPG');
 I1GS = im2gray(I1RGB);
 I2GS = im2gray(I2RGB);
-[matchedPoints1, matchedPoints2] = get_matched_points(I1GS, I2GS);
-figure; 
+[matchedPoints1, matchedPoints2] = get_matched_points(I1GS, I2GS, true, 2);
+figure;
 showMatchedFeatures(I1RGB,I2RGB,matchedPoints1,matchedPoints2, 'montage');
 
 % --- Manual Correspondence ---
-click = false;
-if click
-    % click points
-    [movingPoints, fixedPoints] = cpselect(I1RGB, I2RGB, 'Wait', true);
-    % save clicked points
-    save('clicksave_t2.mat','movingPoints','fixedPoints');
-else
-    % load clicked points
-    load('clicksave_t2.mat');
-end
+[matchedPoints1, matchedPoints2] = get_matched_points(I1GS, I2GS, false, 2);
 figure; 
-showMatchedFeatures(I1RGB,I2RGB,movingPoints,fixedPoints, 'montage');
+showMatchedFeatures(I1RGB,I2RGB,matchedPoints1,matchedPoints2, 'montage');
