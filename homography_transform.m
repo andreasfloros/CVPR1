@@ -1,3 +1,4 @@
+% Transforms points using the homography matrix
 % https://www.mathworks.com/matlabcentral/answers/26141-homography-matrix
 function y = homography_transform(x, v)
     q = v * [x; ones(1, size(x,2))];

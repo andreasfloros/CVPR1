@@ -1,8 +1,5 @@
 % TASK 3 - Camera Calibration and Distortion
-
-% parameter estimation using
-% https://www.mathworks.com/help/vision/ref/estimatecameraparameters.html
-close all
+close all;
 
 % 1. Camera Parameter Estimation
 images = imageSet('checkerboard');
@@ -48,7 +45,6 @@ disp(params.TranslationVectors);
 disp("Camera Distortion");
 disp(params.RadialDistortion);
 disp(params.TangentialDistortion);
-
 
 % 2. Illustrating Camera Distortion
 % Note: the camera used has little radial and tangential distortion, so we 

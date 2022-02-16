@@ -1,9 +1,4 @@
-% TASK 2 - Checking Correspondences
-% for manual correspondences
-% https://www.mathworks.com/help/images/select-matching-control-point-pairs.html#f20-23674
-
-% automatic correspondences using
-% https://www.mathworks.com/help/vision/ref/matchfeatures.html
+% TASK 2 - Keypoint Correspondences Between Images
 close all;
 
 % --- Automatic Correspondence ---

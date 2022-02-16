@@ -1,4 +1,4 @@
-% TASK 1 - visualize FD and HG and place in appendix
+% TASK 1 - Collect Data
 close all;
 
 % --- Calibration Grid - Original --- 
