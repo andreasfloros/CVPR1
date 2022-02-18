@@ -4,7 +4,7 @@ close all;
 % ------------------
 % --- Homography ---
 % ------------------
-auto = true;
+auto = false;
 HG1RGB = imread('HG/_DSC2705.JPG');
 HG2RGB = imread('HG/_DSC2707.JPG');
 HG1 = im2gray(HG1RGB);
@@ -15,6 +15,8 @@ HG2 = im2gray(HG2RGB);
 figure;
 
 % I have disabled inliers to calculate KAZE MSD
+% maybe we should be comparing with manual mode instead of inliers vs
+% outliers, manual has noticable improvements in msd
 
 % extract inliers (to get accurate homography matrix)
 % [x,inliers] = estimateFundamentalMatrix(matchedPoints1,...
@@ -35,8 +37,12 @@ transformedPts = homography_transform(matrixMatchedPoints1, homography);
 
 % calculate msd
 msd = matrixMatchedPoints2 - transformedPts;
-msd = sum(sum(msd .^ 2)) / length(matrixMatchedPoints2);
-
+num_matches = length(matrixMatchedPoints2);
+msd = sum(sum(msd .^ 2)) / num_matches;
+% display mean squared distances as a measure of quality
+display(msd);
+% display number of matches as a measure of quantity
+display(num_matches);
 % visualize homography transformation
 figure;
 image(HG2RGB);
