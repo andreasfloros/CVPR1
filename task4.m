@@ -12,23 +12,30 @@ HG2 = im2gray(HG2RGB);
 
 % get matches
 [matchedPoints1, matchedPoints2] = get_matched_points(HG1, HG2, auto, 41);
-figure; 
+figure;
+
+% I have disabled inliers to calculate KAZE MSD
 
 % extract inliers (to get accurate homography matrix)
-[x,inliers] = estimateFundamentalMatrix(matchedPoints1,...
-    matchedPoints2,'NumTrials',4000);
-showMatchedFeatures(HG1RGB,HG2RGB,matchedPoints1(inliers,:),matchedPoints2(inliers,:), 'montage');
+% [x,inliers] = estimateFundamentalMatrix(matchedPoints1,...
+%     matchedPoints2,'NumTrials',4000);
+% showMatchedFeatures(HG1RGB,HG2RGB,matchedPoints1(inliers,:),matchedPoints2(inliers,:), 'montage');
 
 % convert matches to matrices and use SVD to get the homography matrix
 try
-    matrixMatchedPoints1 = matchedPoints1(inliers,:).Location';
-    matrixMatchedPoints2 = matchedPoints2(inliers,:).Location';
+    matrixMatchedPoints1 = matchedPoints1.Location';
+    matrixMatchedPoints2 = matchedPoints2.Location';
 catch
     matrixMatchedPoints1 = matchedPoints1';
     matrixMatchedPoints2 = matchedPoints2';
 end
 homography = homography_solve(matrixMatchedPoints1, matrixMatchedPoints2);
 transformedPts = homography_transform(matrixMatchedPoints1, homography);
+
+
+% calculate msd
+msd = matrixMatchedPoints2 - transformedPts;
+msd = sum(sum(msd .^ 2)) / length(matrixMatchedPoints2);
 
 % visualize homography transformation
 figure;
