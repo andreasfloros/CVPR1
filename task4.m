@@ -43,7 +43,7 @@ hold off;
 % --- Fundamental Matrix ---
 % --------------------------
 FD1RGB = imread('FD/_DSC2657.JPG');
-FD2RGB = imread('FD/_DSC2661.JPG');
+FD2RGB = imread('FD/_DSC2658.JPG');
 FD1 = im2gray(FD1RGB);
 FD2 = im2gray(FD2RGB);
 [matchedPoints1, matchedPoints2] = get_matched_points(FD1, FD2, auto, 42);
@@ -57,17 +57,31 @@ showMatchedFeatures(FD1RGB, FD2RGB, matchedPoints1(inliers,:), matchedPoints2(in
 % extract epipolar lines for image 2
 try
     matrixMatchedPoints1 = matchedPoints1.Location;
+    matrixMatchedPoints2 = matchedPoints2.Location;
 catch
     matrixMatchedPoints1 = matchedPoints1;
+    matrixMatchedPoints2 = matchedPoints2;
 end
 
-% visualize epipolar lines
+% visualize keypoints and their corresponding epipolar lines
 figure;
+subplot(1,2,1);
+epiLines1 = epipolarLine(fundamental', matrixMatchedPoints2(inliers,:));
+points1 = lineToBorderPoints(epiLines1,size(FD1RGB));
+image(FD1RGB);
+hold on;
+line(points1(:,[1,3])',points1(:,[2,4])');
+plot(matrixMatchedPoints1(inliers,1),matrixMatchedPoints1(inliers,2),'g.','MarkerSize',10);
+hold off;
+pbaspect([4 2.5 1]);
+
+subplot(1,2,2);
 epiLines2 = epipolarLine(fundamental, matrixMatchedPoints1(inliers,:));
 points2 = lineToBorderPoints(epiLines2,size(FD2RGB));
 image(FD2RGB);
 hold on;
 line(points2(:,[1,3])',points2(:,[2,4])');
+plot(matrixMatchedPoints2(inliers,1),matrixMatchedPoints2(inliers,2),'g.','MarkerSize',10);
 hold off;
 pbaspect([4 2.5 1]);
 
