@@ -11,6 +11,7 @@ auto = true;
 I1RGB = imread('FD/_DSC2654.JPG');
 I2RGB = imread('FD/_DSC2661.JPG');
 
+
 % 1. Extract fundamental matrix
 [matchedPoints1, matchedPoints2] = get_matched_points(im2gray(I1RGB), im2gray(I2RGB), auto, 51);
 showMatchedFeatures(I1RGB, I2RGB, matchedPoints1, matchedPoints2, 'montage');
@@ -37,8 +38,8 @@ I2RectGray = im2gray(I2Rect);
 
 % 5. Display Stereo Rectification with Epipolar Lines
 try
-    matrixRectMatchedPoints1 = rectMatchedPoints1.Location;
-    matrixRectMatchedPoints2 = rectMatchedPoints2.Location;
+    matrixRectMatchedPoints1 = rectMatchedPoints1(rectInliers,:).Location;
+    matrixRectMatchedPoints2 = rectMatchedPoints2(rectInliers,:).Location;
 catch
     matrixMatchedPoints1 = matchedPoints1;
     matrixMatchedPoints2 = matchedPoints2;
@@ -87,5 +88,5 @@ disparityRange = [0 128];
 disparityMap = disparityBM(I1GS,I2GS,'DisparityRange',disparityRange,'UniquenessThreshold',20);
 
 subplot(2,1,2);
-imshow(disparityMap,disparityRange);
+imshow(1./disparityMap,disparityRange);
 colorbar
