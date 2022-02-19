@@ -4,7 +4,7 @@ close all;
 % ------------------
 % --- Homography ---
 % ------------------
-auto = false;
+auto = true;
 HG1RGB = imread('HG/_DSC2705.JPG');
 HG2RGB = imread('HG/_DSC2707.JPG');
 HG1 = im2gray(HG1RGB);
@@ -19,14 +19,14 @@ figure;
 % outliers, manual has noticable improvements in msd
 
 % extract inliers (to get accurate homography matrix)
-% [x,inliers] = estimateFundamentalMatrix(matchedPoints1,...
-%     matchedPoints2,'NumTrials',4000);
-% showMatchedFeatures(HG1RGB,HG2RGB,matchedPoints1(inliers,:),matchedPoints2(inliers,:), 'montage');
+[x,inliers] = estimateFundamentalMatrix(matchedPoints1,...
+    matchedPoints2,'NumTrials',4000);
+showMatchedFeatures(HG1RGB,HG2RGB,matchedPoints1(inliers,:),matchedPoints2(inliers,:), 'montage');
 
 % convert matches to matrices and use SVD to get the homography matrix
 try
-    matrixMatchedPoints1 = matchedPoints1.Location';
-    matrixMatchedPoints2 = matchedPoints2.Location';
+    matrixMatchedPoints1 = matchedPoints1(inliers,:).Location';
+    matrixMatchedPoints2 = matchedPoints2(inliers,:).Location';
 catch
     matrixMatchedPoints1 = matchedPoints1';
     matrixMatchedPoints2 = matchedPoints2';
@@ -56,7 +56,7 @@ hold off;
 % --- Fundamental Matrix ---
 % --------------------------
 FD1RGB = imread('FD/_DSC2657.JPG');
-FD2RGB = imread('FD/_DSC2658.JPG');
+FD2RGB = imread('FD/_DSC2661.JPG');
 FD1 = im2gray(FD1RGB);
 FD2 = im2gray(FD2RGB);
 [matchedPoints1, matchedPoints2] = get_matched_points(FD1, FD2, auto, 42);
