@@ -24,9 +24,12 @@ I2GS = im2gray(I2RGB);
 % % display number of matches as a measure of quantity
 % display(num_matches);
 
+num_outliers = 3;
 % --- Manual Correspondence ---
 [matchedPoints1, matchedPoints2] = get_matched_points(I1GS, I2GS, false, 2);
-figure; 
+matchedPoints1 = [matchedPoints1; 100 * rand(num_outliers, 2)];
+matchedPoints2 = [matchedPoints2; 100 * rand(num_outliers, 2)];
+figure;
 showMatchedFeatures(I1RGB,I2RGB,matchedPoints1,matchedPoints2, 'montage');
 
 matrixMatchedPoints1 = matchedPoints1';
