@@ -14,10 +14,6 @@ HG2 = im2gray(HG2RGB);
 [matchedPoints1, matchedPoints2] = get_matched_points(HG1, HG2, auto, 41);
 figure;
 
-% I have disabled inliers to calculate KAZE MSD
-% maybe we should be comparing with manual mode instead of inliers vs
-% outliers, manual has noticable improvements in msd
-
 % extract inliers (to get accurate homography matrix)
 [x,inliers] = estimateFundamentalMatrix(matchedPoints1,...
     matchedPoints2,'NumTrials',4000);
